@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LayUI单页简单的导航式单页应用</title>
+
+    <link rel="stylesheet" href="lib/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-layout-body layui-layout-admin">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">管理</div>
+            <ul class="layui-nav layui-layout-left">
+            </ul>
+        </div>
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree"  lay-filter="leftnav">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a onclick="return false">常用功能</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="function/demo1.html" onclick="return false" >表单</a></dd>
+                            <dd><a href="function/demo2.html" onclick="return false">测试</a></dd>
+                        </dl>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div id="body" class="layui-body">
+
+        </div>
+    </div>
+</div>
+
+<script src="lib/layui/layui.js"></script>
+
+<script>
+    layui.use(['element','form','layer'], function(){
+        var element = layui.element,
+        form = layui.form,
+        $ = layui.jquery;
+
+        // 注册所有的模块，用于传入子页面进行初始化
+        var modules= {
+            "element":element,
+            "form":form,
+            "layer":layer
+        }
+
+        element.on('nav(leftnav)', function(data){
+            var url=data.attr("href");
+
+            if(url===undefined || url.trim().length===0){
+                // 主菜单, 禁用加载
+                return;
+            }
+
+            // 载入子页面
+            $("#body").load(url,function () {
+                // 子页面只需要实现 load 方法, 就可以在加载完成后运行相关逻辑
+                load(modules)
+            })
+
+        });
+    });
+</script>
+
+</body>
+</html>
